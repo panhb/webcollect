@@ -1,5 +1,6 @@
 package com.hh.webcollect.common.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.Date;
@@ -51,6 +52,7 @@ public class BaseBO extends BaseModel {
     /**
      * 是否删除
      */
+    @JSONField(serialize = false)
     private Boolean isDelete;
 
     /**

@@ -1,10 +1,15 @@
 package com.hh.webcollect.common.service;
 
-import com.hh.webcollect.common.model.BaseBO;
-import com.hh.webcollect.common.model.BaseEntity;
+import com.google.common.collect.Lists;
+import com.hh.webcollect.common.model.*;
 import com.hh.webcollect.common.repository.BaseRepository;
-import org.springframework.beans.BeanUtils;
+import com.hh.webcollect.common.util.BeanUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -28,16 +33,7 @@ public class BaseServiceImpl<T extends BaseEntity, S extends BaseBO> implements 
     @Override
     public S findById(Long id, Class<S> sClass) {
         T t = baseRepository.findById(id).get();
-        S s = null;
-        try {
-            s = sClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        BeanUtils.copyProperties(t, s);
-        return s;
+        return BeanUtil.copyBean(t, sClass);
     }
 
     @Override
@@ -68,6 +64,46 @@ public class BaseServiceImpl<T extends BaseEntity, S extends BaseBO> implements 
     @Override
     public void deleteAll() {
         baseRepository.deleteAll();
+    }
+
+    /**
+     * page对象转换
+     *
+     * @param pageVO
+     * @return
+     */
+    public Pageable getPageable(PageVO pageVO) {
+        List<SortVO> sortList = pageVO.getSortList();
+        List<Sort.Order> orderList = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(sortList)) {
+            for (SortVO sort : sortList) {
+                Sort.Direction direction;
+                if ("asc".equalsIgnoreCase(sort.getType())) {
+                    direction = Sort.Direction.ASC;
+                }else if ("desc".equalsIgnoreCase(sort.getType())) {
+                    direction = Sort.Direction.DESC;
+                } else {
+                    continue;
+                }
+                orderList.add(new Sort.Order(direction, sort.getName()));
+            }
+        }
+        return PageRequest.of(pageVO.getPageNum() - 1, pageVO.getPageSize(), Sort.by(orderList));
+    }
+
+    /**
+     * jpa的page<entity>转pageResult<bo>
+     *
+     * @param page
+     * @param sClass
+     * @return
+     */
+    public PageResult<S> transforPage(final Page<T> page, Class<S> sClass) {
+        PageResult<S> pageResult = new PageResult<>();
+        pageResult.setTotalElements(page.getTotalElements());
+        pageResult.setTotalPages(page.getTotalPages());
+        pageResult.setContent(BeanUtil.copyList(page.getContent(), sClass));
+        return pageResult;
     }
 
 

@@ -27,4 +27,9 @@ public class Permission extends BaseEntity {
      * 模块code
      */
     private String moduleCode;
+
+    /**
+     * url地址
+     */
+    private String url;
 }

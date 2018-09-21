@@ -1,9 +1,11 @@
 package com.hh.webcollect.system.service;
 
+import com.hh.webcollect.common.model.PageResult;
 import com.hh.webcollect.common.service.BaseService;
 import com.hh.webcollect.system.model.bo.UserBO;
 import com.hh.webcollect.system.model.entity.User;
 import com.hh.webcollect.system.model.vo.AddUserVO;
+import com.hh.webcollect.system.model.vo.QueryUserVO;
 
 /**
  * @author hongbo.pan
@@ -26,5 +28,13 @@ public interface UserService extends BaseService<User, UserBO> {
      * @return UserBO
      */
     UserBO findByUsername(String username);
+
+    /**
+     * 用户分页查询
+     *
+     * @param queryUserVO
+     * @return
+     */
+    PageResult<UserBO> pageUser(QueryUserVO queryUserVO);
 
 }

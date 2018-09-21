@@ -18,7 +18,12 @@ public enum SystemErrorCode implements ErrorCode {
     /**
      * 用户不存在
      */
-    USER_IS_NOT_EXIST(100002,"用户不存在");
+    USER_IS_NOT_EXIST(100002,"用户不存在"),
+
+    /**
+     * 用户不存在
+     */
+    USER_IS_LOCKED(100003,"用户被冻结");
 
     private int code;
 

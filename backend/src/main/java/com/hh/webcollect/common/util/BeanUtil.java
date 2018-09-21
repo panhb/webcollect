@@ -31,7 +31,6 @@ public class BeanUtil {
     public static void copyBean(Object source,
                                 Object target,
                                 boolean ignoreSourceNullField) {
-
         String[] sourceNullPropertyNames = null;
         if (ignoreSourceNullField) {
             sourceNullPropertyNames = getSourceNullPropertyNames(source);
@@ -72,7 +71,8 @@ public class BeanUtil {
      * @return
      */
     public static <T> T copyBean(Object source,
-                                 Class<T> targetClass, boolean ignoreSourceNullField) {
+                                 Class<T> targetClass,
+                                 boolean ignoreSourceNullField) {
         T target;
         try {
             target = targetClass.newInstance();

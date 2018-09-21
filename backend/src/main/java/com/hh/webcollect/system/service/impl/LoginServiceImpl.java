@@ -3,6 +3,7 @@ package com.hh.webcollect.system.service.impl;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import com.hh.webcollect.common.Constant;
+import com.hh.webcollect.common.enums.StatusEnum;
 import com.hh.webcollect.common.enums.error.system.SystemErrorCode;
 import com.hh.webcollect.common.exception.WcException;
 import com.hh.webcollect.system.model.bo.UserBO;
@@ -29,6 +30,9 @@ public class LoginServiceImpl implements LoginService {
         UserBO userBO = userService.findByUsername(loginVO.getUsername());
         if (userBO == null) {
             throw new WcException(SystemErrorCode.USER_IS_NOT_EXIST);
+        }
+        if (StatusEnum.D.getCode().equals(userBO.getStatus())) {
+            throw new WcException(SystemErrorCode.USER_IS_LOCKED);
         }
         String password = Hashing.sha256().hashString(
                 loginVO.getPassword() + Constant.PASSWORD_SALT, Charsets.UTF_8).toString();

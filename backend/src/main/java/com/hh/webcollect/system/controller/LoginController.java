@@ -2,12 +2,9 @@ package com.hh.webcollect.system.controller;
 
 import com.hh.webcollect.common.controller.BaseController;
 import com.hh.webcollect.common.model.Result;
-import com.hh.webcollect.common.util.BeanUtil;
 import com.hh.webcollect.system.model.bo.UserBO;
-import com.hh.webcollect.system.model.vo.AddUserVO;
 import com.hh.webcollect.system.model.vo.LoginVO;
 import com.hh.webcollect.system.service.LoginService;
-import com.hh.webcollect.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

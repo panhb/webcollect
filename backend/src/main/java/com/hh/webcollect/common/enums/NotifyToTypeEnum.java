@@ -18,7 +18,7 @@ public enum NotifyToTypeEnum {
     /**
      * 用户
      */
-    USER("USER","USER");
+    USER("USER","用户");
 
     private static Map<String, NotifyToTypeEnum> enum_map = Maps.newHashMap();
 
