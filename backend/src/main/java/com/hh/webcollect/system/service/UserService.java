@@ -7,6 +7,8 @@ import com.hh.webcollect.system.model.entity.User;
 import com.hh.webcollect.system.model.vo.AddUserVO;
 import com.hh.webcollect.system.model.vo.QueryUserVO;
 
+import java.util.Set;
+
 /**
  * @author hongbo.pan
  * @date 2018/9/4
@@ -36,5 +38,13 @@ public interface UserService extends BaseService<User, UserBO> {
      * @return
      */
     PageResult<UserBO> pageUser(QueryUserVO queryUserVO);
+
+    /**
+     * 根据用户名查询权限编号
+     *
+     * @param username
+     * @return Set<String>
+     */
+    Set<String> findPermissionCodesByUsername(String username);
 
 }

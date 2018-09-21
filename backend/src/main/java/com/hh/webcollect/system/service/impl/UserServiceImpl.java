@@ -1,19 +1,24 @@
 package com.hh.webcollect.system.service.impl;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.hash.Hashing;
+import com.google.common.collect.Sets;
 import com.hh.webcollect.common.Constant;
 import com.hh.webcollect.common.model.PageResult;
 import com.hh.webcollect.common.service.BaseServiceImpl;
 import com.hh.webcollect.common.util.BeanUtil;
 import com.hh.webcollect.system.model.bo.UserBO;
+import com.hh.webcollect.system.model.entity.RolePermission;
 import com.hh.webcollect.system.model.entity.User;
 import com.hh.webcollect.system.model.vo.AddUserVO;
 import com.hh.webcollect.system.model.vo.QueryUserVO;
 import com.hh.webcollect.system.repository.UserRepository;
+import com.hh.webcollect.system.service.RolePermissionService;
+import com.hh.webcollect.system.service.UserRoleService;
 import com.hh.webcollect.system.service.UserService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author hongbo.pan
@@ -32,12 +38,18 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserBO> implements Us
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserRoleService userRoleService;
+
+    @Autowired
+    private RolePermissionService rolePermissionService;
+
     @Override
     public UserBO addUser(AddUserVO addUserVO) {
         UserBO userBO = BeanUtil.copyBean(addUserVO, UserBO.class);
         String password = userBO.getPassword();
-        password = Hashing.sha256().hashString(
-                password + Constant.PASSWORD_SALT, Charsets.UTF_8).toString();
+        password = new SimpleHash(Constant.ALGORITHMNAME, password,
+                ByteSource.Util.bytes(Constant.PASSWORD_SALT), Constant.HASHITERATIONS).toHex();
         userBO.setPassword(password);
         User savedUser = save(BeanUtil.copyBean(userBO, User.class));
         return BeanUtil.copyBean(savedUser, UserBO.class);
@@ -82,5 +94,20 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserBO> implements Us
             return null;
         }, pageable);
         return transforPage(userPage, UserBO.class);
+    }
+
+    @Override
+    public Set<String> findPermissionCodesByUsername(String username) {
+        Set<String> permissionCodes = Sets.newLinkedHashSet();
+        Set<String> roleCodes = userRoleService.findRoleCodesByUsername(username);
+        if (CollectionUtils.isNotEmpty(roleCodes)) {
+            List<RolePermission> list = rolePermissionService.findByRoleCodeIn(roleCodes);
+            if (CollectionUtils.isNotEmpty(list)) {
+                for (RolePermission rolePermission : list) {
+                    permissionCodes.add(rolePermission.getPermissionCode());
+                }
+            }
+        }
+        return permissionCodes;
     }
 }
