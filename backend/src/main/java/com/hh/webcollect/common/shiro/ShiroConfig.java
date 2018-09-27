@@ -2,9 +2,9 @@ package com.hh.webcollect.common.shiro;
 
 import com.google.common.collect.Maps;
 import com.hh.webcollect.common.Constant;
+import com.hh.webcollect.system.service.FilterChainDefinitionsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -14,6 +14,8 @@ import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,13 +30,17 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-    /**
-     * Shiro生命周期处理器
-     */
-    @Bean
-    public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
+    @Value("${shiro.redis.host}")
+    private String host;
+
+    @Value("${shiro.redis.port}")
+    private int port;
+
+    @Value("${shiro.redis.timeout}")
+    private int timeout;
+
+    @Autowired
+    private FilterChainDefinitionsService filterChainDefinitionsService;
 
     /**
      * 授权所用配置
@@ -51,9 +57,9 @@ public class ShiroConfig {
      */
     public RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
-        redisManager.setHost("localhost");
-        redisManager.setPort(6379);
-        redisManager.setTimeout(0);
+        redisManager.setHost(host);
+        redisManager.setPort(port);
+        redisManager.setTimeout(timeout);
         return redisManager;
     }
 
@@ -136,11 +142,8 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilters(filters);
 
         // 权限控制map
-        Map<String, String> filterChainDefinitionMap = Maps.newLinkedHashMap();
-        filterChainDefinitionMap.put("/doLogin", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(
+                filterChainDefinitionsService.loadFilterChainDefinitions());
         return shiroFilterFactoryBean;
     }
 

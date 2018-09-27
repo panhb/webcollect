@@ -4,8 +4,8 @@ import com.hh.webcollect.common.controller.BaseController;
 import com.hh.webcollect.common.model.PageResult;
 import com.hh.webcollect.common.model.Result;
 import com.hh.webcollect.system.model.bo.UserBO;
-import com.hh.webcollect.system.model.vo.AddUserVO;
 import com.hh.webcollect.system.model.vo.QueryUserVO;
+import com.hh.webcollect.system.model.vo.SaveUserVO;
 import com.hh.webcollect.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +29,9 @@ public class UserController extends BaseController {
     }
 
     @PostMapping
-    public Result<UserBO> save(@Valid AddUserVO userVO) {
-        return Result.succ(userService.addUser(userVO));
+    public Result<UserBO> save(@Valid SaveUserVO userVO) {
+        UserBO userBO = userService.saveUser(userVO);
+        return Result.succ(userBO);
     }
 
     @GetMapping

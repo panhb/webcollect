@@ -4,8 +4,8 @@ import com.hh.webcollect.common.model.PageResult;
 import com.hh.webcollect.common.service.BaseService;
 import com.hh.webcollect.system.model.bo.UserBO;
 import com.hh.webcollect.system.model.entity.User;
-import com.hh.webcollect.system.model.vo.AddUserVO;
 import com.hh.webcollect.system.model.vo.QueryUserVO;
+import com.hh.webcollect.system.model.vo.SaveUserVO;
 
 import java.util.Set;
 
@@ -18,10 +18,10 @@ public interface UserService extends BaseService<User, UserBO> {
     /**
      * 新增用户
      *
-     * @param addUserVO
+     * @param userVO
      * @return
      */
-    UserBO addUser(AddUserVO addUserVO);
+    UserBO saveUser(SaveUserVO userVO);
 
     /**
      * 根据用户名查找用户

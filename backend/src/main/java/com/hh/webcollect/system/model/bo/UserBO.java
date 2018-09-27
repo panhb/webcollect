@@ -33,4 +33,15 @@ public class UserBO extends BaseBO {
      * 最后登录时间
      */
     private Date lastLoginDate;
+
+    /**
+     * shiro-redis需要一个主键标识
+     * @return
+     */
+    @Override
+    public Long getId() {
+        return super.getId();
+    }
+
+
 }

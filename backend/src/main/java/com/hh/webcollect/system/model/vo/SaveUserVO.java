@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * @date 2018/8/31
  */
 @Data
-public class AddUserVO {
+public class SaveUserVO {
 
     /**
      * 用户名

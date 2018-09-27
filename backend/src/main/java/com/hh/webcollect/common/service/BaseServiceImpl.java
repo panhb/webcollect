@@ -6,10 +6,7 @@ import com.hh.webcollect.common.repository.BaseRepository;
 import com.hh.webcollect.common.util.BeanUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.util.List;
 
@@ -39,6 +36,11 @@ public class BaseServiceImpl<T extends BaseEntity, S extends BaseBO> implements 
     @Override
     public List<T> findAll() {
         return baseRepository.findAll();
+    }
+
+    @Override
+    public List<T> findAll(Example example) {
+        return baseRepository.findAll(example);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.hh.webcollect.common.service;
 
 import com.hh.webcollect.common.model.BaseBO;
 import com.hh.webcollect.common.model.BaseEntity;
+import org.springframework.data.domain.Example;
 
 import java.util.List;
 
@@ -33,6 +34,14 @@ public interface BaseService<T extends BaseEntity, S extends BaseBO> {
      * @return
      */
     List<T> findAll();
+
+    /**
+     * 条件查询全部
+     *
+     * @param example
+     * @return
+     */
+    List<T> findAll(Example example);
 
     /**
      * 保存

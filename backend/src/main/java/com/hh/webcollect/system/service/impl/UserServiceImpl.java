@@ -10,8 +10,8 @@ import com.hh.webcollect.common.util.BeanUtil;
 import com.hh.webcollect.system.model.bo.UserBO;
 import com.hh.webcollect.system.model.entity.RolePermission;
 import com.hh.webcollect.system.model.entity.User;
-import com.hh.webcollect.system.model.vo.AddUserVO;
 import com.hh.webcollect.system.model.vo.QueryUserVO;
+import com.hh.webcollect.system.model.vo.SaveUserVO;
 import com.hh.webcollect.system.repository.UserRepository;
 import com.hh.webcollect.system.service.RolePermissionService;
 import com.hh.webcollect.system.service.UserRoleService;
@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.util.List;
@@ -45,8 +46,9 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserBO> implements Us
     private RolePermissionService rolePermissionService;
 
     @Override
-    public UserBO addUser(AddUserVO addUserVO) {
-        UserBO userBO = BeanUtil.copyBean(addUserVO, UserBO.class);
+    @Transactional(rollbackFor = Exception.class)
+    public UserBO saveUser(SaveUserVO userVO) {
+        UserBO userBO = BeanUtil.copyBean(userVO, UserBO.class);
         String password = userBO.getPassword();
         password = new SimpleHash(Constant.ALGORITHMNAME, password,
                 ByteSource.Util.bytes(Constant.PASSWORD_SALT), Constant.HASHITERATIONS).toHex();

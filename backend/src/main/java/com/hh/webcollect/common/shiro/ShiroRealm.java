@@ -1,7 +1,5 @@
 package com.hh.webcollect.common.shiro;
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.Hashing;
 import com.hh.webcollect.common.Constant;
 import com.hh.webcollect.common.enums.StatusEnum;
 import com.hh.webcollect.system.model.bo.UserBO;
@@ -15,6 +13,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.Set;
 
@@ -25,10 +24,24 @@ import java.util.Set;
 @Slf4j
 public class ShiroRealm extends AuthorizingRealm {
 
+    /**
+     * Lazy注解，延迟Realm实现中Service对象的初始化时间，
+     * 这样就可以保证Service实际初始化的时候会被BeanPostProcessor拦截，
+     * 创建具有事务功能的代理对象
+     * 此处解决userService事务失效
+     *
+     * 破除循环依赖时，也可以通过Lazy注解解决
+     *
+     * 此处还有二个种解决方式
+     * 1.不注入service，通过dao层调用获取数据，没有验证
+     * 2.写一个监听器，在spring初始化完成后设置自己的realm就可以了，没有验证
+     */
     @Autowired
+    @Lazy
     private UserService userService;
 
     @Autowired
+    @Lazy
     private UserRoleService userRoleService;
 
     @Override
