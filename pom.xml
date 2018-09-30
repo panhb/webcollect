@@ -29,6 +29,8 @@
         <fastjson.version>1.2.49</fastjson.version>
         <guava.version>26.0-jre</guava.version>
         <commons-collections4.version>4.2</commons-collections4.version>
+        <shiro-spring.version>1.4.0</shiro-spring.version>
+        <shiro-redis.version>3.1.0</shiro-redis.version>
     </properties>
 
     <dependencies>
@@ -89,6 +91,16 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>${commons-collections4.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro-spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>${shiro-redis.version}</version>
         </dependency>
 
         <dependency>

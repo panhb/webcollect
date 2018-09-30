@@ -5,19 +5,18 @@ import lombok.Data;
 
 /**
  * @author hongbo.pan
- * @date 2018/8/31
+ * @date 2018/9/28
  */
 @Data
-public class RoleBO extends BaseBO {
+public class PropertyTypeBO extends BaseBO {
 
     /**
-     * 角色编码
+     * 系统属性类型code
      */
     private String code;
 
     /**
-     * 角色名称
+     * 系统属性类型名称
      */
     private String name;
-
 }

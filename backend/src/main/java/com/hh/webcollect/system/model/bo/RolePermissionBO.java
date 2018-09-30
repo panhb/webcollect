@@ -1,11 +1,13 @@
 package com.hh.webcollect.system.model.bo;
 
 import com.hh.webcollect.common.model.BaseBO;
+import lombok.Data;
 
 /**
  * @author hongbo.pan
  * @date 2018/9/4
  */
+@Data
 public class RolePermissionBO extends BaseBO {
 
     /**
