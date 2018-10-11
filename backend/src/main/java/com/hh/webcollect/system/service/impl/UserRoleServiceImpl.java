@@ -2,8 +2,10 @@ package com.hh.webcollect.system.service.impl;
 
 import com.google.common.collect.Sets;
 import com.hh.webcollect.common.service.BaseServiceImpl;
+import com.hh.webcollect.common.util.BeanUtil;
 import com.hh.webcollect.system.model.bo.UserRoleBO;
 import com.hh.webcollect.system.model.entity.UserRole;
+import com.hh.webcollect.system.model.vo.SaveUserRoleVO;
 import com.hh.webcollect.system.repository.UserRoleRepository;
 import com.hh.webcollect.system.service.UserRoleService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -48,5 +50,23 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRole, UserRoleBO> i
             }
         }
         return roleCodes;
+    }
+
+    @Override
+    public List<UserRoleBO> saveUserRole(List<SaveUserRoleVO> saveUserRoleVOList) {
+        List<UserRole> list = userRoleRepository.saveAllWithDate(BeanUtil.copyList(saveUserRoleVOList, UserRole.class));
+        if (CollectionUtils.isNotEmpty(list)) {
+            return BeanUtil.copyList(list, UserRoleBO.class);
+        }
+        return null;
+    }
+
+    @Override
+    public UserRoleBO findByUsernameAndRoleCode(String username, String roleCode) {
+        UserRole userRole = userRoleRepository.findByUsernameAndRoleCodeAndIsDelete(username, roleCode, false);
+        if (userRole != null) {
+            return BeanUtil.copyBean(userRole, UserRoleBO.class);
+        }
+        return null;
     }
 }

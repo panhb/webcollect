@@ -42,4 +42,13 @@ public interface UserRoleRepository extends BaseRepository<UserRole, Long> {
      */
     List<UserRole> findByRoleCodeAndIsDelete(String roleCode, Boolean isDelete);
 
+    /**
+     * findByUsernameAndRoleCodeAndIsDelete
+     *
+     * @param username
+     * @param roleCode
+     * @param isDelete
+     * @return UserRole
+     */
+    UserRole findByUsernameAndRoleCodeAndIsDelete(String username, String roleCode, Boolean isDelete);
 }

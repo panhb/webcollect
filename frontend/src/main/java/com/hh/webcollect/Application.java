@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.MediaType;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.List;
 public class Application {
 
     @Bean
-    public HttpMessageConverters fastJsonHttpMessageConverters(){
+    HttpMessageConverters fastJsonHttpMessageConverters(){
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         FastJsonConfig config = new FastJsonConfig();
         config.setSerializerFeatures(
@@ -39,6 +42,22 @@ public class Application {
         converter.setSupportedMediaTypes(fastMediaTypes);
         converter.setFastJsonConfig(config);
         return new HttpMessageConverters(converter);
+    }
+
+    @Bean
+    CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        //设置访问源地址
+        corsConfiguration.addAllowedOrigin("*");
+        //设置访问源请求头
+        corsConfiguration.addAllowedHeader("*");
+        //设置访问源请求方法
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(true);
+        //对接口配置跨域设置
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(source);
     }
 
 

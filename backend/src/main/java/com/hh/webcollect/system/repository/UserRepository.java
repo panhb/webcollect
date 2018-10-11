@@ -24,6 +24,15 @@ public interface UserRepository extends BaseRepository<User, Long> {
     User findByUsernameAndIsDelete(String username, Boolean isDelete);
 
     /**
+     * 根据用户昵称查找用户
+     *
+     * @param nickname
+     * @param isDelete
+     * @return User
+     */
+    User findByNicknameAndIsDelete(String nickname, Boolean isDelete);
+
+    /**
      * 分页条件查询
      *
      * @param specification

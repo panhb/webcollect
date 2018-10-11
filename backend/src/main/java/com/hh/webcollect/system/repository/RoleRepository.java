@@ -11,4 +11,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends BaseRepository<Role, Long> {
 
+    /**
+     * findByCodeAndIsDelete
+     *
+     * @param code
+     * @param isDelete
+     * @return Role
+     */
+    Role findByCodeAndIsDelete(String code, Boolean isDelete);
+
 }

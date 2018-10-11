@@ -32,6 +32,14 @@ public interface UserService extends BaseService<User, UserBO> {
     UserBO findByUsername(String username);
 
     /**
+     * 根据用户昵称查找用户
+     *
+     * @param nickname
+     * @return UserBO
+     */
+    UserBO findByNickname(String nickname);
+
+    /**
      * 用户分页查询
      *
      * @param queryUserVO
@@ -46,5 +54,12 @@ public interface UserService extends BaseService<User, UserBO> {
      * @return Set<String>
      */
     Set<String> findPermissionCodesByUsername(String username);
+
+    /**
+     * 更新最后登录时间
+     *
+     * @param id
+     */
+    void updateLastLoginDate(Long id);
 
 }

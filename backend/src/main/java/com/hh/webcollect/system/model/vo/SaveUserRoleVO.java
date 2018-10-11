@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2018/8/31
  */
 @Data
-public class LoginVO {
+public class SaveUserRoleVO {
 
     /**
      * 用户名
@@ -18,9 +18,9 @@ public class LoginVO {
     private String username;
 
     /**
-     * 密码
+     * 角色code
      */
-    @NotBlank(message = "密码")
-    private String password;
+    @NotBlank(message = "角色code不能为空")
+    private String roleCode;
 
 }

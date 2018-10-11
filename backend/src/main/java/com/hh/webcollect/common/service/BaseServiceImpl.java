@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author hongbo.pan
@@ -29,8 +30,11 @@ public class BaseServiceImpl<T extends BaseEntity, S extends BaseBO> implements 
 
     @Override
     public S findById(Long id, Class<S> sClass) {
-        T t = baseRepository.findById(id).get();
-        return BeanUtil.copyBean(t, sClass);
+        Optional<T> optional = baseRepository.findById(id);
+        if (!optional.isPresent()) {
+            return null;
+        }
+        return BeanUtil.copyBean(optional.get(), sClass);
     }
 
     @Override
@@ -104,7 +108,9 @@ public class BaseServiceImpl<T extends BaseEntity, S extends BaseBO> implements 
         PageResult<S> pageResult = new PageResult<>();
         pageResult.setTotalElements(page.getTotalElements());
         pageResult.setTotalPages(page.getTotalPages());
-        pageResult.setContent(BeanUtil.copyList(page.getContent(), sClass));
+        if (CollectionUtils.isNotEmpty(page.getContent())) {
+            pageResult.setContent(BeanUtil.copyList(page.getContent(), sClass));
+        }
         return pageResult;
     }
 

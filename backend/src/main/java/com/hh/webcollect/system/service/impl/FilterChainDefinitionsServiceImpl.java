@@ -39,6 +39,13 @@ public class FilterChainDefinitionsServiceImpl implements FilterChainDefinitions
                 filterChainDefinitionMap.put(permission.getUrl(), permissionCode);
             }
         }
+        //swagger2
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/v2/api-docs", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/webjars/**", "anon");
+
+        filterChainDefinitionMap.put("/doLogin", "anon");
         filterChainDefinitionMap.put("/doLogin", "anon");
         filterChainDefinitionMap.put("/**", "authc");
         return filterChainDefinitionMap;

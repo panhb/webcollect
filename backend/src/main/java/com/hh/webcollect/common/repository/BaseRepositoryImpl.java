@@ -1,9 +1,14 @@
 package com.hh.webcollect.common.repository;
 
 import com.google.common.collect.Lists;
+import com.hh.webcollect.common.Constant;
 import com.hh.webcollect.common.enums.StatusEnum;
 import com.hh.webcollect.common.model.BaseEntity;
+import com.hh.webcollect.system.model.bo.UserBO;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +36,16 @@ public class BaseRepositoryImpl<T, ID extends Serializable>
     public <S extends BaseEntity> S saveWithDate(S entity) {
         Date date = new Date();
         entity.setModifyDate(date);
+        UserBO userBO = getUserInfo();
+        if (userBO != null) {
+            entity.setModifyUserId(userBO.getId());
+            entity.setModifyUserName(userBO.getUsername());
+        }
         if (entity.getId() == null) {
+            if (userBO != null) {
+                entity.setCreateUserId(userBO.getId());
+                entity.setCreateUserName(userBO.getUsername());
+            }
             entity.setCreateDate(date);
             entity.setIsDelete(false);
             entity.setStatus(StatusEnum.E.getCode());
@@ -42,6 +56,7 @@ public class BaseRepositoryImpl<T, ID extends Serializable>
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public <S extends BaseEntity> List<S> saveAllWithDate(List<S> entitys) {
         List<S> list = Lists.newArrayList();
@@ -51,5 +66,16 @@ public class BaseRepositoryImpl<T, ID extends Serializable>
             }
         }
         return list;
+    }
+
+    private UserBO getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject != null) {
+            Session session = subject.getSession();
+            if (session != null) {
+                return (UserBO) session.getAttribute(Constant.LOGINUSER);
+            }
+        }
+        return null;
     }
 }

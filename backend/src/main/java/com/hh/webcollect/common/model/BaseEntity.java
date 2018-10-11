@@ -29,14 +29,14 @@ public class BaseEntity extends BaseModel {
     private Date createDate;
 
     /**
-     * 创建人
+     * 创建人id
      */
     private Long createUserId;
 
     /**
-     * 创建人
+     * 创建人名称
      */
-    private Long createUserName;
+    private String createUserName;
 
     /**
      * 修改时间
@@ -44,14 +44,14 @@ public class BaseEntity extends BaseModel {
     private Date modifyDate;
 
     /**
-     * 修改人
+     * 修改人id
      */
     private Long modifyUserId;
 
     /**
-     * 修改人
+     * 修改人名称
      */
-    private Long modifyUserName;
+    private String modifyUserName;
 
     /**
      * 状态
