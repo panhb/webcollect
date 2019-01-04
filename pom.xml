@@ -29,6 +29,7 @@
         <fastjson.version>1.2.49</fastjson.version>
         <guava.version>26.0-jre</guava.version>
         <commons-collections4.version>4.2</commons-collections4.version>
+        <commons-io.version>2.6</commons-io.version>
         <shiro-spring.version>1.4.0</shiro-spring.version>
         <shiro-redis.version>3.1.0</shiro-redis.version>
         <swagger2.version>2.9.2</swagger2.version>
@@ -106,6 +107,12 @@
             <artifactId>commons-collections4</artifactId>
             <version>${commons-collections4.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+
 
         <!-- shiro libs -->
         <dependency>

@@ -39,7 +39,7 @@ public class UserController extends BaseController {
         return Result.succ(userBO);
     }
 
-    @PostMapping
+    @PostMapping("/save")
     @ApiOperation(value = "新增用户", notes = "新增用户")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String"),
@@ -52,7 +52,7 @@ public class UserController extends BaseController {
         return Result.succ(userBO);
     }
 
-    @GetMapping
+    @GetMapping("/pageUser")
     @ApiOperation(value = "用户列表", notes = "条件分页获取用户列表")
     public Result<PageResult<UserBO>> pageUser(@Valid QueryUserVO queryUserVO) {
         PageResult<UserBO> userBOPage = userService.pageUser(queryUserVO);

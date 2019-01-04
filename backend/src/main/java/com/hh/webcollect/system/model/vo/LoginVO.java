@@ -20,7 +20,7 @@ public class LoginVO {
     /**
      * 密码
      */
-    @NotBlank(message = "密码")
+    @NotBlank(message = "密码不能为空")
     private String password;
 
 }

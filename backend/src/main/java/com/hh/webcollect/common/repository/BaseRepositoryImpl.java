@@ -5,6 +5,7 @@ import com.hh.webcollect.common.Constant;
 import com.hh.webcollect.common.enums.StatusEnum;
 import com.hh.webcollect.common.model.BaseEntity;
 import com.hh.webcollect.system.model.bo.UserBO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -21,11 +22,13 @@ import java.util.List;
  * @author hongbo.pan
  * @date 2018/8/31
  */
+@Slf4j
 public class BaseRepositoryImpl<T, ID extends Serializable>
         extends SimpleJpaRepository<T, ID> implements BaseRepository<T, ID>  {
 
     private final EntityManager entityManager;
 
+    @SuppressWarnings("all")
     public BaseRepositoryImpl(Class<T> domainClass, EntityManager em) {
         super(domainClass, em);
         this.entityManager = em;
@@ -69,12 +72,16 @@ public class BaseRepositoryImpl<T, ID extends Serializable>
     }
 
     private UserBO getUserInfo() {
-        Subject subject = SecurityUtils.getSubject();
-        if (subject != null) {
-            Session session = subject.getSession();
-            if (session != null) {
-                return (UserBO) session.getAttribute(Constant.LOGINUSER);
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            if (subject != null) {
+                Session session = subject.getSession();
+                if (session != null) {
+                    return (UserBO) session.getAttribute(Constant.LOGINUSER);
+                }
             }
+        } catch (Exception e) {
+            log.error("获取用户信息失败", e);
         }
         return null;
     }
