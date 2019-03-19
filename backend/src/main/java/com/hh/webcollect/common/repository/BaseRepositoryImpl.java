@@ -61,10 +61,10 @@ public class BaseRepositoryImpl<T, ID extends Serializable>
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public <S extends BaseEntity> List<S> saveAllWithDate(List<S> entitys) {
+    public <S extends BaseEntity> List<S> saveAllWithDate(List<S> entities) {
         List<S> list = Lists.newArrayList();
-        if (CollectionUtils.isNotEmpty(entitys)) {
-            for (S entity : entitys) {
+        if (CollectionUtils.isNotEmpty(entities)) {
+            for (S entity : entities) {
                 list.add(this.saveWithDate(entity));
             }
         }

@@ -2,6 +2,7 @@ package com.hh.webcollect.system.model.entity;
 
 import com.hh.webcollect.common.model.BaseEntity;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 @Data
 @Entity(name = "user")
+@Where(clause = "is_delete=0")
 public class User extends BaseEntity {
 
     /**

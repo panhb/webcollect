@@ -47,7 +47,7 @@ public class FilterChainDefinitionsServiceImpl implements FilterChainDefinitions
 
         filterChainDefinitionMap.put("/doLogin", "anon");
         filterChainDefinitionMap.put("/doLogin", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "anon");
         return filterChainDefinitionMap;
     }
 }
